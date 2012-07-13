@@ -53,7 +53,3 @@ class Pagination
 		}
 	}	
 }
-
-$g = new Pagination();
-$test = $g->Per(5)->Size(21)->Paginate(5);
-print_r($test);
