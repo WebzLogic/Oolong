@@ -1,5 +1,5 @@
 <?
-s
+
 if(!function_exists('SaveTextField'))
 {
 	function SaveTextField($field) 
