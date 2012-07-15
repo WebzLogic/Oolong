@@ -33,7 +33,7 @@ class sql
 	
 	function InsertInto($table, $data = array())
 	{
-		$this->sql[] = "INSERT INTO ".$table."(".implode(",",array_keys($data)).") VALUES(".implode(",",array_values($data)).")";
+		$this->sql[] = "INSERT INTO ".$table."(".implode(array_keys($data),',').") VALUES(".implode(array_values($data),',').")";
 		return $this;
 	}
 	
