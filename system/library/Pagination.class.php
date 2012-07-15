@@ -13,6 +13,11 @@ class Pagination
 		return $this;
 	}
 	
+	public function IsEmpty()
+	{
+		return $this->Size() > 0;
+	}
+	
 	public function Size($size)
 	{
 		$this->size = $size;
@@ -25,19 +30,23 @@ class Pagination
 		$this->page_count = (int) (($this->size / $this->per) + 1);
 		$remainder = $this->size % $this->per;
 		
-		if($this->size > 0)
+		if($this->!IsEmpty())
 		{
+				
+			$last_page = ($this->page_number == $this->page_count);
+			
 			if($this->size <= $this->per)
 			{
 				return ['start'=>0,'end'=>$this->per];
 			}
-			else if($this->size > $this->per && $this->page_number < $this->page_count)
+			else if($this->size > $this->per && !$last_page)
 			{
 				return ['start'=>$this->per*($this->page_number-1), 'end'=>$this->per*$this->page_number];
 			}
-			else if($this->page_number == $this->page_count)
+			else if($last_page)
 			{
-				if($remainder == 0)
+				$no_residue = ($remainder == 0);
+				if($no_residue)
 				{
 					return ['start'=>$this->per*($this->page_count-1), 'end'=>$this->per*$this->page_count];
 				}

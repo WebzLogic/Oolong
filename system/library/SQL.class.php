@@ -69,7 +69,7 @@ class sql
 	
 	function ToString()
 	{
-		return implode(' ', $this->sql);
+		return implode(' ',$this->sql);
 	}
 }
 

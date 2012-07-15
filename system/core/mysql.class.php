@@ -40,6 +40,10 @@ class MySQL
 	{	
 		return mysql_num_rows($this->query);
 	}
+	public function IsEmpty()
+	{
+		return $this->RowCount() == 0;
+	}
 	public function FetchRows()
 	{
 		return mysql_fetch_row($this->query);

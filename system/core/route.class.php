@@ -6,22 +6,22 @@ class route extends Registry
 	{
 		$parts = explode("/",$query_string);
 		$app = $parts[0];
-		$action = (isset($parts[1]) || empty($parts[0])) ? $parts[1]: "index";
+		$action = (isset($parts[1]) || empty($parts[1])) ? $parts[1]: "index";
 		$arguments = array_slice($parts, 2, count($parts));
 
-		include_once '/application/controllers/'.$app.'Controller.class.php';
-	
-		if(class_exists($app.'Controller'))
-		{
-			Registry::$instance->controller->$app = $app.'Controller';
+		$controller_filename = '/application/controllers/'.$app.'Controller.class.php';
+		//if(file_exists($controller_filename))
+		//{
+				include_once '/application/controllers/'.$app.'Controller.class.php';
 			
-			$action = (!method_exists(Registry::$instance->controller->$app, $action)) ? "index": $action;
-			Registry::$instance->controller->$app->$action();
-		}
-		else
-		{
-			print "<span style='color: red'>class doesn't exist</span>";	
-		}
+				if(class_exists($app.'Controller'))
+				{
+					Registry::$instance->controller->$app = $app.'Controller';
+					
+					$action = (!method_exists(Registry::$instance->controller->$app, $action)) ? "index": $action;
+					Registry::$instance->controller->$app->$action($arguments);
+				}
+		//}
 	}
 }
 

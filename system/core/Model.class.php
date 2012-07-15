@@ -3,9 +3,11 @@
 class Model extends Registry
 {
 	private static $models = array();
+	protected $registry;
+	
 	public function __construct()
 	{
-		
+		$this->registry = Registry::$instance;
 	}
 	public function __get($key)
 	{

@@ -2,73 +2,11 @@
 
 class ArrayList
 {
-	private static $list = array();
 	private $source = array();
-
-	public static function BubbleSortArray($source, $callback = null)
-	{
-		$temp = "";	
-		for($passes=0; $passes<count($source); $passes++)
-		{
-			for($index=0; $index<count($source); $index++)
-			{
-				$comparison = ($callback == null || !function_exists($callback)) ? $source[$index] > $source[$index+1]: $callback;
-				if($comparison)
-				{
-					$temp = $source[$index];
-					$source[$index] = $source[$index+1];
-					$source[$index+1] = $temp;
-				}
-			}
-		}
-		return new ArrayList($source);
-	}
 	
 	public static function IsArray($array)
 	{
 		return is_array($array);
-	}
-	
-	public static function QuickSort($array, $sorted)
-	{
-		$less = array();
-		$greater = array();
-		
-		$locus = $array[rand(0, count($array))];
-
-		foreach($array as $value)
-		{
-			if($value <= $locus)
-			{
-				$less[] = $value;
-			}
-			else if($value > $locus)
-			{
-				$greater[] = $value;
-			}
-		}
-		
-		if(count($less) > 1)
-		{
-			self::QuickSort($less, $sorted);
-		}
-		else if(count($less) == 1)
-		{
-			$sorted[] = $less[0];
-		}
-		
-		$sorted[] = $locus;
-		
-		if(count($greater) > 1)
-		{
-			self::QuickSort($greater, $sorted);
-		}
-		else if(count($greater) == 1)
-		{
-			$sorted[] = $greater[0];
-		}
-		
-		return $sorted;
 	}
 
 	public static function Split($string, $separator)
@@ -80,12 +18,11 @@ class ArrayList
 	{
 		return new self($source);
 	}
-	
-	/* Member Functions */
+
 	
 	public function __construct($source = null)
 	{
-		if($source != null)
+		if(is_array($source))
 		{
 			$this->source = $source;
 		}
@@ -104,42 +41,6 @@ class ArrayList
 	{
 		$this->source[] = $value;
 		return $this;
-	}
-	
-	public function BinarySearch($start, $finish, $value)
-	{
-		if(ArrayList::IsArray($this->source))
-		{
-			static $is_found = false;
-			$middle_index = floor(($finish-$start)/2);
-			$middle_value = $this->source[$middle_index];
-		
-			if($value == $middle_value || $start == $finish)
-			{
-				$is_found = true;
-			}
-			else
-			{
-				if($value < $middle_value)
-				{
-					$this->BinarySearch($start, $middle_index - 1, $value);
-				}
-				else if($value > $middle_value)
-				{
-					$this->BinarySearch($middle_index + 1, $finish, $value);
-				}
-			}
-			return $is_found;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	public function BubbleSort($callback = null)
-	{
-		return ArrayList::BubbleSortArray($this->source, $callback);
 	}
 	
 	public function Compact()
@@ -194,7 +95,8 @@ class ArrayList
 		{
 			foreach($array as $b)
 			{
-				if($a == $b && !in_array($a, $intersection))
+				$is_unique = !in_array($a, $intersection);
+				if($a == $b && $is_unique)
 				{
 					$intersection[] = $a;
 				}
@@ -240,13 +142,16 @@ class ArrayList
 	
 	public function Map($callback = null)
 	{
-		if(function_exists($callback))
+		/*if(function_exists($callback))
 		{
-			for($i=0; $i<count($this->source); $i++)
+		    if($this->Size() > 0)
 			{
-				$this->source[$i] = $callback($this->source[$i]);
+				for($i=0; $i<count($this->source); $i++)
+				{
+					$this->source[$i] = $callback($this->source[$i]);
+				}	
 			}
-		}
+		}*/
 		return $this;
 	}
 	
@@ -292,7 +197,7 @@ class ArrayList
 	{
 		if(function_exists($callback))
 		{
-			sort($this->source, $callback);
+			usort($this->source, $callback);
 		}
 		return $this;
 	}
