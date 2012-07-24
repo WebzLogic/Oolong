@@ -1,10 +1,5 @@
 <?php
 
-function clean($a)
-{
-    return trim(strip_tags($a));
-}
-
 class _GET extends ArrayList
 {
     private static $get = array();
@@ -13,7 +8,10 @@ class _GET extends ArrayList
     public static function Singleton()
     {
         self::$get = new ArrayList($_POST);
-        self::$get->Map('clean');
+        foreach(self::$get as $value)
+        {
+            self::$get[] = StringBuilder::ToStringBuilder($value)->EscapeString()->ToString();
+        }
         
         $class = __CLASS__;
 		return new $class();
@@ -38,14 +36,18 @@ class _POST extends ArrayList
     public static function Singleton()
     {
         self::$post = new ArrayList($_POST);
-        
         $class = __CLASS__;
 		return new $class();
     }
-     
-    public function Clean()
+    
+    public function GetAll()
     {
-        return self::$post;
+        foreach(self::$post->ToArray() as $key => $value)
+        {
+            $cleaned_value = new StringBuilder($value);
+            self::$post->$key = $cleaned_value->EscapeString()->StripHTMLTags()->ToString();
+        }
+        return self::$post->ToArray();
     }
     
     public function Get($key)

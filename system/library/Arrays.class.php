@@ -19,7 +19,6 @@ class ArrayList
 		return new self($source);
 	}
 
-	
 	public function __construct($source = null)
 	{
 		if(is_array($source))
@@ -142,22 +141,13 @@ class ArrayList
 	
 	public function Map($callback = null)
 	{
-		/*if(function_exists($callback))
-		{
-		    if($this->Size() > 0)
-			{
-				for($i=0; $i<count($this->source); $i++)
-				{
-					$this->source[$i] = $callback($this->source[$i]);
-				}	
-			}
-		}*/
+		array_map($callback, $this->source);
 		return $this;
 	}
 	
 	public function Merge($merge)
 	{
-		array_merge($merge, $this->source);
+		array_merge($this->source, $merge);
 		return $this;
 	}
 	
@@ -231,6 +221,11 @@ class ArrayList
 	public function __get($v)
 	{
 		return $this->Value($v);
+	}
+	
+	public function __set($key, $value)
+	{
+		return $this->source[$key] = $value;
 	}
 }
 

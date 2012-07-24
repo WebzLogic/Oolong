@@ -45,7 +45,7 @@ class Registry
 		return Registry::$objects[$key];
 	}
 	
-	public function SetOption($key, $value)
+	public function StoreSetting($key, $value)
 	{
 		if(!in_array($key, Registry::$settings))
 		{
@@ -53,7 +53,7 @@ class Registry
 		}
 	}
 	
-	public function GetOption($key)
+	public function GetSetting($key)
 	{
 		return Registry::$settings[$key];
 	}
